@@ -9,7 +9,7 @@
                 tools:context="com.android.learn.learndroid.AboutActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="@string/about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
