@@ -42,6 +42,7 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 		dialog.setTitle("Downloading images");
 		dialog.setIndeterminate(false);
 		dialog.setMax(urls.length);
+		dialog.show();
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		surpriseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(MainActivity.this, "Button clicked!", Toast.LENGTH_SHORT).show();
+				new SurpriseTask(MainActivity.this).execute(new String[]{""});
 			}
 		});
 	}
