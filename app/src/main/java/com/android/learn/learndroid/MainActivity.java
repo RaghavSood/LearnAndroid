@@ -9,11 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements ImageInterface {
 
 	Button surpriseButton;
+	int i = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +32,21 @@ public class MainActivity extends Activity implements ImageInterface {
 	}
 
 	@Override
-	public void updateImages(Bitmap[] bitmaps) {
+	public void updateImages(final Bitmap[] bitmaps) {
 		surpriseButton.setEnabled(false);
-		ImageView imageView = new ImageView(this);
+		final ImageView imageView = new ImageView(this);
+		RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.root_layout);
+		rootLayout.addView(imageView, new RelativeLayout.LayoutParams(500, 500));
+		imageView.setImageBitmap(bitmaps[i++]);
+		imageView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(i>=bitmaps.length) {
+					i = 0;
+				}
+				imageView.setImageBitmap(bitmaps[i++]);
+			}
+		});
 	}
 
 	@Override
