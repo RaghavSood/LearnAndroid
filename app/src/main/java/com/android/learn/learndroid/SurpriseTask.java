@@ -18,6 +18,7 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 	public static String TAG = "SurpriseTask";
 	private Context mContext;
 	private ProgressDialog dialog;
+	private ImageInterface imageInterface;
 
 	public static final String[] urls =
 			{"http://25.media.tumblr.com/tumblr_l0krs6h0ha1qzv52ko1_500.jpg",
@@ -31,8 +32,9 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 					"http://30.media.tumblr.com/tumblr_m0r6met4e51qbhms5o1_500.jpg",
 					"http://25.media.tumblr.com/tumblr_m4ikw59QfP1r6jd7fo1_500.jpg"};
 
-	public SurpriseTask(Context context) {
+	public SurpriseTask(Context context, ImageInterface listener) {
 		mContext = context;
+		imageInterface = listener;
 	}
 
 	@Override
@@ -41,7 +43,9 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 		dialog = new ProgressDialog(mContext);
 		dialog.setTitle("Downloading images");
 		dialog.setIndeterminate(false);
+		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		dialog.setMax(urls.length);
+		dialog.setCancelable(false);
 		dialog.show();
 	}
 
@@ -53,6 +57,7 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 			for (String url : urls) {
 				publishProgress(i+1);
 				bitmaps[i] = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
+				i++;
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -71,5 +76,7 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 	@Override
 	protected void onPostExecute(Bitmap[] bitmaps) {
 		super.onPostExecute(bitmaps);
+		dialog.dismiss();
+		imageInterface.updateImages(bitmaps);
 	}
 }

@@ -2,14 +2,16 @@ package com.android.learn.learndroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ImageInterface {
 
 	Button surpriseButton;
 
@@ -22,9 +24,15 @@ public class MainActivity extends Activity {
 		surpriseButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new SurpriseTask(MainActivity.this).execute(new String[]{""});
+				new SurpriseTask(MainActivity.this, MainActivity.this).execute(new String[]{""});
 			}
 		});
+	}
+
+	@Override
+	public void updateImages(Bitmap[] bitmaps) {
+		surpriseButton.setEnabled(false);
+		ImageView imageView = new ImageView(this);
 	}
 
 	@Override
