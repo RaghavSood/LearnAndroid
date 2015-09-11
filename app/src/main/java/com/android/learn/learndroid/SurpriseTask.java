@@ -33,29 +33,33 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 					"http://25.media.tumblr.com/tumblr_m4ikw59QfP1r6jd7fo1_500.jpg"};
 
 	public SurpriseTask(Context context, ImageInterface listener) {
-		mContext = context;
-		imageInterface = listener;
+		mContext = context; // Save the context
+		imageInterface = listener; // Save the interface instance
 	}
 
+	/**
+	 * This code all runs before the actual task on the UI thread
+	 */
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		dialog = new ProgressDialog(mContext);
+		dialog = new ProgressDialog(mContext); // Create a new progress dialog
 		dialog.setTitle("Downloading images");
-		dialog.setIndeterminate(false);
-		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		dialog.setMax(urls.length);
-		dialog.setCancelable(false);
-		dialog.show();
+		dialog.setIndeterminate(false); // We know exactly how many...
+		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); // Use a progress bar
+		dialog.setMax(urls.length); // Set our total number of images to the max
+		dialog.setCancelable(false); // Can't cancel out
+		dialog.show(); // Display the dialog
 	}
 
 	@Override
 	protected Bitmap[] doInBackground(String... params) {
-		Bitmap bitmaps[] = new Bitmap[urls.length];
+		Bitmap bitmaps[] = new Bitmap[urls.length]; // Create array to store the images
 		try {
 			int i=0;
-			for (String url : urls) {
-				publishProgress(i+1);
+			for (String url : urls) { // Iterate over all the URLs
+				publishProgress(i+1); // Update the progress dialog
+				// Retrieve the image
 				bitmaps[i] = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
 				i++;
 			}
@@ -70,13 +74,13 @@ public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
-		dialog.setProgress(values[0]);
+		dialog.setProgress(values[0]); // Update the progress dialog
 	}
 
 	@Override
 	protected void onPostExecute(Bitmap[] bitmaps) {
 		super.onPostExecute(bitmaps);
-		dialog.dismiss();
-		imageInterface.updateImages(bitmaps);
+		dialog.dismiss(); // We're done, let's get rid of this
+		imageInterface.updateImages(bitmaps); // Tell the Activity about the images
 	}
 }
